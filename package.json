@@ -1,0 +1,16 @@
+{
+  "name": "aegza-ai-website",
+  "private": true,
+  "version": "2.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "resend": "^6.5.2"
+  },
+  "devDependencies": {
+    "vercel": "^48.10.2"
+  }
+}
