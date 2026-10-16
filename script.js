@@ -12,6 +12,7 @@ const revealItems = document.querySelectorAll('.reveal');
 const progress = document.querySelector('.scroll-progress');
 const loader = document.querySelector('.page-loader');
 const toast = document.querySelector('.toast');
+const themeToggle = document.querySelector('.theme-toggle');
 const motionAllowed = window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches;
 
 const services = {
@@ -54,6 +55,28 @@ if (menuButton && navLinksWrap) {
   });
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape') setMenu(false); });
 }
+
+const THEME_KEY = 'aegza-theme';
+const applyTheme = (mode) => {
+  const light = mode === 'light';
+  document.documentElement.classList.toggle('light', light);
+  if (themeToggle) {
+    themeToggle.setAttribute('aria-pressed', String(light));
+    themeToggle.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+  }
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if (metaTheme) metaTheme.setAttribute('content', light ? '#eef3f9' : '#07111f');
+};
+
+let storedTheme = null;
+try { storedTheme = localStorage.getItem(THEME_KEY); } catch (error) {}
+applyTheme(storedTheme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+
+themeToggle?.addEventListener('click', () => {
+  const next = document.documentElement.classList.contains('light') ? 'dark' : 'light';
+  applyTheme(next);
+  try { localStorage.setItem(THEME_KEY, next); } catch (error) {}
+});
 
 const renderService = (key) => {
   if (!serviceDetail) return;
